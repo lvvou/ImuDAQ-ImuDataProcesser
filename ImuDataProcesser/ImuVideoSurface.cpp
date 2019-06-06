@@ -95,7 +95,3 @@ bool ImuVideoSurface::getstate()
 {
     return record;
 }
-ImuVideoSurface::~ImuVideoSurface()
-{
-
-}

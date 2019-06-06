@@ -67,7 +67,17 @@ bool ImuChart::addLine(int position)
     push_back(serietemp,position);
     return true;
 }
-
+bool ImuChart::addMarker(int position)
+{
+    ImuVerticalLine *serietemp = new ImuVerticalLine(position,axisY);
+    //serietemp->setColor(Qt::blue);
+    serietemp->setPen(QPen(Qt::blue, 1, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
+    chart->addSeries(serietemp);
+    chart->setAxisX(axisX,serietemp);
+    chart->setAxisY(axisY,serietemp);
+    push_back(serietemp,position);
+    return true;
+}
 unsigned int ImuChart::GetaxisXMax()
 {
     return axisXMax;
@@ -81,7 +91,7 @@ bool ImuChart::setLabel(QString label)
 
 bool ImuChart::showRedLine(bool show)
 {
-    for(auto serie : series)
+    for(auto serie : Markerseries)
         serie->setVisible(show);
     return true;
 }
@@ -126,6 +136,14 @@ void ImuChart::push_back(ImuVerticalLine *serie, int position)
     positions.push_back(position);
     connect(serie, &ImuVerticalLine::deleteme, this, &ImuChart::emitDelLine);
 }
+
+void ImuChart::Markerpush_back(ImuVerticalLine *serie, int position)
+{
+    Markerseries.push_back(serie);
+    MarkerPosition.push_back(position);
+//    connect(serie, &ImuVerticalLine::deleteme, this, &ImuChart::emitDelLine);
+}
+
 void ImuChart::emitDelLine(int position)
 {
     delLine(position);
@@ -138,6 +156,14 @@ void ImuChart::delLine(int position)
     series[iter]->hide();
     chart->removeSeries(series[iter]);
     series.remove(iter);
+}
+void ImuChart::delMarker(int position)
+{
+    int iter = MarkerPosition.indexOf(position);
+    MarkerPosition.remove(iter);
+    Markerseries[iter]->hide();
+    chart->removeSeries(Markerseries[iter]);
+    Markerseries.remove(iter);
 }
 void ImuChart::clearLineList()
 {

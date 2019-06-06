@@ -21,7 +21,7 @@ class ImuViewFinder : public QMainWindow
 
 public:
     explicit ImuViewFinder(QWidget *parent = nullptr);
-    ~ImuViewFinder() override;
+    ~ImuViewFinder();
     QSize sizeHint() const override;
     void capture(QString address);
     void stop();

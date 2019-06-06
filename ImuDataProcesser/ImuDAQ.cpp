@@ -333,11 +333,11 @@ bool IMUDAQ_Task::IMUDAQ()
     if (!send) IMU_log.close();
 #endif // sendDebug
 
-    t = nullptr;
     std::cout << "Data Acquisition over !" << std::endl;
     std::cout << "Wait for 1 second !" << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     std::cout << "Please enter your command : ";
+    t = nullptr;
     return(true);
 }
 bool IMUDAQ_Task::setrunning(bool runbool)

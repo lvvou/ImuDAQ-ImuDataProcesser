@@ -7,6 +7,7 @@ Menu::Menu(QWidget *parent) :
 {
     w = nullptr;
     d = nullptr;
+    //setAttribute(Qt::WA_DeleteOnClose, true);
     ui->setupUi(this);
 }
 
@@ -28,6 +29,7 @@ void Menu::on_ImuDAQ_clicked()
     if(d==nullptr){
         d = new ImuDaqDialog;
         connect(d,&ImuDaqDialog::deleteme,this,&Menu::deleteWindows);
+        //d->setWindowFlag(Qt::WindowMinMaxButtonsHint,false);
         d->show();
     }
     else {

@@ -38,6 +38,8 @@ public:
     void closeEvent(QCloseEvent *event);
     void hideEvent(QHideEvent *event);
     void showEvent(QShowEvent *event);
+    void moveEvent(QMoveEvent *event);
+    void resizeEvent(QResizeEvent *event);
 private slots:
     void on_PeriodlineEdit_editingFinished();
     void on_NamelineEdit_editingFinished();
@@ -55,6 +57,10 @@ private slots:
     void on_StoppushButton_clicked();
     void on_ConnectpushButton_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 signals:
     void deleteme(QString id);
 private:
@@ -68,6 +74,8 @@ private:
     QVector<double> timeseries;
     QString address;
     ImuViewFinder viewFinder;
+    RECT mainRect;
+    bool limit;
     IMUDAQ_Task* IMUDAQ;
     LpmsSensorI* lpmsRightFoot;
     LpmsSensorI* lpmsRightThigh;

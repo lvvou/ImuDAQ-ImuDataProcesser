@@ -1,5 +1,9 @@
 #include "ImuDaqDialog.h"
 #include "ui_dialog.h"
+#include "windef.h"
+#include <Windows.h>
+#include "winuser.h"
+#pragma comment(lib, "user32.lib")  //加载 ws2_32.dll
 extern ImuSocket_Task ImuSocket;
 extern bool syncaction;
 ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
@@ -17,6 +21,8 @@ ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
             button->setEnabled(false);
         //}
     }
+
+
 
     period = 5;
     filenum = 0;
@@ -41,12 +47,19 @@ ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
     viewFinder.move(20,20);
     viewFinder.show();
 
-    //this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
     connect(IMUDAQ,&IMUDAQ_Task::isObtain,this,&ImuDaqDialog::saveImage);
     connect(IMUDAQ,&IMUDAQ_Task::acquireOver,this,&ImuDaqDialog::stopSave);
     this->setWindowTitle("Imu DAQ Programer");
     this->show();
     this->move(360,20);
+    mainRect.top = (LONG)this->geometry().top();
+    mainRect.bottom = (LONG)this->geometry().bottom();
+    mainRect.right = (LONG)this->geometry().right();
+    mainRect.left = (LONG)this->geometry().left();
+    ClipCursor(&mainRect);
+    setAttribute(Qt::WA_DeleteOnClose, true);
+    limit = true;
 }
 
 ImuDaqDialog::~ImuDaqDialog()
@@ -287,20 +300,43 @@ void ImuDaqDialog::closeEvent(QCloseEvent *event)
         qDebug()<<"please close after over-recording ! ";
     } else {
         event->accept();
+        QDialog::closeEvent(event);
+        //emit(deleteme("ImuDaqDialog"));
     }
-    emit(deleteme("ImuDaqDialog"));
 }
 
 void ImuDaqDialog::hideEvent(QHideEvent *event)
 {
-    event->accept();
+    QDialog::hideEvent(event);
     viewFinder.hide();
 }
 
 void  ImuDaqDialog::showEvent(QShowEvent *event)
 {
-    event->accept();
+    QDialog::showEvent(event);
     viewFinder.show();
+}
+void ImuDaqDialog::moveEvent(QMoveEvent *event)
+{
+    QDialog::moveEvent(event);
+    mainRect.top = (LONG)this->geometry().top();
+    mainRect.bottom = (LONG)this->geometry().bottom();
+    mainRect.right = (LONG)this->geometry().right();
+    mainRect.left = (LONG)this->geometry().left();
+    if(limit){
+        ClipCursor(&mainRect);
+    }
+}
+void ImuDaqDialog::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+    mainRect.top = (LONG)this->geometry().top();
+    mainRect.bottom = (LONG)this->geometry().bottom();
+    mainRect.right = (LONG)this->geometry().right();
+    mainRect.left = (LONG)this->geometry().left();
+    if(limit){
+        ClipCursor(&mainRect);
+    }
 }
 
 void ImuDaqDialog::on_SelectpushButton_clicked()
@@ -321,4 +357,22 @@ void ImuDaqDialog::on_StoppushButton_clicked()
 void ImuDaqDialog::on_ConnectpushButton_clicked()
 {
     CmdProcess(13);
+}
+
+void ImuDaqDialog::on_pushButton_clicked()
+{
+    if(limit){
+        limit = false;
+        ClipCursor(nullptr);
+    }
+    else {
+        limit = true;
+        ClipCursor(&mainRect);
+    }
+}
+
+void ImuDaqDialog::on_pushButton_2_clicked()
+{
+    ClipCursor(nullptr);
+    this->close();
 }

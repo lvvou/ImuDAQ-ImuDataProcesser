@@ -1,7 +1,6 @@
 #include "Menu.h"
 #include <QApplication>
 #include "ImuEncode.pb.h"
-
 #pragma warning(disable:4244)	// 禁止警告由double到float的降低精度问题
 
 int main(int argc, char *argv[])

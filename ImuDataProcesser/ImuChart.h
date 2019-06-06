@@ -65,20 +65,26 @@ public:
     ImuChart(QLabel *shower,unsigned int axisXMax=500,unsigned int axisYMax=1,QString label="AccX",QWidget *parent = nullptr);
     ~ImuChart();
     bool addLine(int position);
+    bool addMarker(int position);
     unsigned int GetaxisXMax();
     bool setLabel(QString label);
     bool setSerie(QList<QPointF> points);
     bool showRedLine(bool show);
     bool ishave(int position);
     void delLine(int position);
+    void delMarker(int position);
     void clearLineList();
     void push_back(ImuVerticalLine* serie,int position);
+    void Markerpush_back(ImuVerticalLine* serie,int position);
+
 public:
     QChart* chart;
     ImuVerticalLine* ImageLine;
     ImuLineSeries* serie;
     QVector<ImuVerticalLine*> series;
     QVector<int> positions;
+    QVector<int> MarkerPosition;
+    QVector<ImuVerticalLine*> Markerseries;
     QValueAxis *axisX;
     QValueAxis *axisY;
     double axisYMax;

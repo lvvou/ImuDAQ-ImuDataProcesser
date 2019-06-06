@@ -80,9 +80,9 @@ void ImuViewFinder::init()
     }
     QCameraViewfinderSettings viewfinderSettings;
     viewfinderSettings.setResolution(424, 240);
-    viewfinderSettings.setMinimumFrameRate(15);
-    viewfinderSettings.setMaximumFrameRate(30);
-    //viewfinderSettings.setMinimumFrameRate(60);
-    //viewfinderSettings.setMaximumFrameRate(120);
+    //viewfinderSettings.setMaximumFrameRate(30);
+    //viewfinderSettings.setMinimumFrameRate(30);
+    viewfinderSettings.setMinimumFrameRate(120);
+    viewfinderSettings.setMaximumFrameRate(120);
     camera->setViewfinderSettings(viewfinderSettings);
 }

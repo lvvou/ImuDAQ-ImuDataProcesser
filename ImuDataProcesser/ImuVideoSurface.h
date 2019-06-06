@@ -15,7 +15,6 @@ class ImuVideoSurface : public QAbstractVideoSurface
 
 public:
     ImuVideoSurface(QWidget *widget, QObject *parent = nullptr);
-    ~ImuVideoSurface() override;
     QList<QVideoFrame::PixelFormat> supportedPixelFormats(QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const override;
     bool isFormatSupported(const QVideoSurfaceFormat &format) const override;
     bool start(const QVideoSurfaceFormat &format) override;

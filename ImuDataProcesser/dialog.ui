@@ -14,60 +14,16 @@
    <string>Imu DAQ Programer</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_7">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="minimumSize">
       <size>
        <width>100</width>
        <height>0</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>50</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
-      <string>Floder:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="2">
-    <widget class="QLabel" name="Filelabel">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>400</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>C:/</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3" colspan="2">
-    <widget class="QPushButton" name="SelectpushButton">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Select Image File</string>
+      <string>FileName:</string>
      </property>
     </widget>
    </item>
@@ -90,41 +46,16 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="PeriodlineEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+   <item row="6" column="5">
+    <widget class="QPushButton" name="StoppushButton">
      <property name="minimumSize">
       <size>
        <width>100</width>
        <height>20</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
-      <string>5</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>FileName:</string>
+      <string>Stop</string>
      </property>
     </widget>
    </item>
@@ -147,6 +78,58 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Subject</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QPushButton" name="ResetpushButton">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Reset</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="6">
+    <widget class="QPushButton" name="ShowImagepushButton">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>ShowImage</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="4">
+    <widget class="QPushButton" name="ActivepushButton">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+   </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_3">
      <property name="minimumSize">
@@ -160,35 +143,16 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="FilenumlineEdit">
+   <item row="6" column="1">
+    <widget class="QPushButton" name="SyncpushButton">
      <property name="minimumSize">
       <size>
        <width>100</width>
        <height>20</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
      <property name="text">
-      <string>1</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Subject</string>
+      <string>Sync</string>
      </property>
     </widget>
    </item>
@@ -217,16 +181,41 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_4">
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="FilenumlineEdit">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_7">
      <property name="minimumSize">
       <size>
        <width>100</width>
        <height>0</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="text">
-      <string>SampleRate:</string>
+      <string>Floder:</string>
      </property>
     </widget>
    </item>
@@ -249,42 +238,41 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
-    <widget class="QPushButton" name="ResetpushButton">
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="PeriodlineEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>100</width>
        <height>20</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Reset</string>
+      <string>5</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
-    <widget class="QPushButton" name="SyncpushButton">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_4">
      <property name="minimumSize">
       <size>
        <width>100</width>
-       <height>20</height>
+       <height>0</height>
       </size>
      </property>
      <property name="text">
-      <string>Sync</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="2">
-    <widget class="QPushButton" name="ConnectpushButton">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Connect</string>
+      <string>SampleRate:</string>
      </property>
     </widget>
    </item>
@@ -301,8 +289,8 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="4">
-    <widget class="QPushButton" name="ActivepushButton">
+   <item row="5" column="4">
+    <widget class="QPushButton" name="pushButton_2">
      <property name="minimumSize">
       <size>
        <width>100</width>
@@ -310,12 +298,12 @@
       </size>
      </property>
      <property name="text">
-      <string>Start</string>
+      <string>Close</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="5">
-    <widget class="QPushButton" name="StoppushButton">
+   <item row="6" column="2">
+    <widget class="QPushButton" name="ConnectpushButton">
      <property name="minimumSize">
       <size>
        <width>100</width>
@@ -323,20 +311,58 @@
       </size>
      </property>
      <property name="text">
-      <string>Stop</string>
+      <string>Connect</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="6">
-    <widget class="QPushButton" name="ShowImagepushButton">
+   <item row="0" column="3" colspan="2">
+    <widget class="QPushButton" name="SelectpushButton">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>200</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Select Image File</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QLabel" name="Filelabel">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>C:/</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="5" colspan="2">
+    <widget class="QPushButton" name="pushButton">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
        <height>20</height>
       </size>
      </property>
      <property name="text">
-      <string>ShowImage</string>
+      <string>Release Mouse</string>
      </property>
     </widget>
    </item>

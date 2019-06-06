@@ -102,7 +102,7 @@ void ImuProcesserWidget::on_pushButton_clicked()
 
             for (unsigned int var = 0; var < marker.size()-1; var++) {
                 if(marker[var]==0){
-                    chart->addLine(int(var));
+                    chart->addMarker(int(var));
                 }
             }
 
@@ -131,7 +131,7 @@ void ImuProcesserWidget::on_pushButton_clicked()
             }
             for (unsigned int var = 0; var < marker.size()-1; var++) {
                 if(marker[var]==0){
-                    chart->addLine(int(var));
+                    chart->addMarker(int(var));
                 }
             }
             chart->ImageLine->changeHigh(this->ImagePosition,chart->axisY);
