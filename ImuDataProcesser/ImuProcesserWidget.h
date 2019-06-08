@@ -187,6 +187,9 @@ private slots:
     void on_ImagPositionhorizontalSlider_valueChanged(int value);
     void on_SelectpushButton_clicked();
 
+    void on_pushButton_2_clicked();    
+    void on_lineEdit_2_editingFinished();
+
 signals:
     void deleteme(QString id);
 private:
@@ -201,6 +204,8 @@ private:
     int ImagePosition;
     int position;
     unsigned int axisXMax;
+    std::vector<int> slice;
+    std::vector<std::string> slicename;
     QString rootDir;
     QString ImageDir;
     QString FirstImage;

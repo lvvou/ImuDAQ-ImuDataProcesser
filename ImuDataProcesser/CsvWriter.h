@@ -23,7 +23,8 @@ class CsvWriter
 {
 public:
     CsvWriter();
-    bool toCsv(QString filename,ImuDataChart imudata,QVector<int> positions,unsigned int length);
+    bool toCsv(QString filename,ImuDataChart imudata,std::vector<int> slice,
+    std::vector<std::string> slicename,unsigned int length);
 };
 
 #endif // CSVWRITER_H

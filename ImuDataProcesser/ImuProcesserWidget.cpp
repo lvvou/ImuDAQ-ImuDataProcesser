@@ -5,7 +5,7 @@ ImuProcesserWidget::ImuProcesserWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
-    rootDir = "F:/";
+    rootDir = "C:/";
     showred = true;
     first = true;
     isAcc = true;
@@ -17,13 +17,13 @@ ImuProcesserWidget::ImuProcesserWidget(QWidget *parent) :
     this->position = 0;
     reader.setAutoTransform(true);
     imagewidget.show();
-    imagewidget.move(976+880+40,20);
+    //imagewidget.move(976+880+40,20);
     imagewidget.setWindowFlags(Qt::WindowStaysOnTopHint);
     Chart = new LegChart(ui->Coordinatelabel);
     this->setWindowTitle("Imu Data Processer");
     connect(Chart,&LegChart::add,this,&ImuProcesserWidget::addline);
     connect(Chart,&LegChart::del,this,&ImuProcesserWidget::delline);
-    this->move(860,20);
+    //this->move(860,20);
 }
 
 ImuProcesserWidget::~ImuProcesserWidget()
@@ -38,6 +38,8 @@ void ImuProcesserWidget::on_pushButton_clicked()
     std::cout<<"Filename : "<<rootDir.toStdString()+"/"+Filename+".csv"<<std::endl;
     csvreader.Init(rootDir.toStdString()+"/"+Filename+".csv");
     csvreader.ClearVector();
+    slice.clear();
+    slicename.clear();
     length = csvreader.ReadCsv();
     csvreader.imudata.VerifyEuler2Quaternion();
     ImageDir = rootDir+"/"+ui->FilenamelineEdit->text();
@@ -75,6 +77,7 @@ void ImuProcesserWidget::on_pushButton_clicked()
     }
 
     unsigned int i = 0;
+    bool haveObtainSlice = false;
     auto marker = csvreader.imudata.GetMarkerVector();
     std::cout<<"loss package : "<<std::count(marker.begin(),marker.end(),0)<<std::endl;
     auto LegSignal = csvreader.imudata.GetLegSignal().LegSignal[1-isRT];
@@ -99,15 +102,24 @@ void ImuProcesserWidget::on_pushButton_clicked()
             for (int var = 0; var <= signal->end()-signal->begin()-1; var++) {
                 chart->serie->append(var,*(temp+var));
             }
+            int tempSlice = 0;
 
             for (unsigned int var = 0; var < marker.size()-1; var++) {
                 if(marker[var]==0){
                     chart->addMarker(int(var));
+                    if(!haveObtainSlice)
+                        if(var!=0&&var!=marker.size()-2)
+                            tempSlice++;
                 }
+                if(!haveObtainSlice)
+                    slice.push_back(tempSlice);
             }
+            if(!haveObtainSlice)
+                for(int i=0;i<=tempSlice;i++)
+                    slicename.push_back("1000");
 
             chart->ImageLine->changeHigh(this->ImagePosition,chart->axisY);
-
+            haveObtainSlice = true;
             i++;
         }
     i=12;
@@ -308,7 +320,8 @@ void ImuProcesserWidget::on_OutputpushButton_clicked()
             dir.mkpath(address);
     }
     QString Allfilename = address+"/"+ui->lineEdit->text()+".csv";
-    csvwriter.toCsv(Allfilename,csvreader.imudata,Chart->LeftLegChart.FootChart.AccXChart.positions,length);
+    csvwriter.toCsv(Allfilename,csvreader.imudata,slice,
+                    slicename,length);
 }
 
 void ImuProcesserWidget::on_axisXRangespinBox_editingFinished()
@@ -351,6 +364,7 @@ bool ImuProcesserWidget::ChangeImageLine(int value)
                     accangle->ImageLine->changeHigh(value,accangle->axisY);
                     accangle->update();
                 }
+    ui->lineEdit_2->setText(QString::fromStdString(slicename[uint(slice[uint(ImagePosition)])]));
     return true;
 }
 void ImuProcesserWidget::on_ImagPositionhorizontalSlider_valueChanged(int value)
@@ -390,8 +404,18 @@ bool ImuProcesserWidget::ChangeImage(int value)
 void ImuProcesserWidget::on_SelectpushButton_clicked()
 {
     rootDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                     "F:/",
+                                                     "C:/ImuLog/",
                                                      QFileDialog::ShowDirsOnly
                                                      | QFileDialog::DontResolveSymlinks);
     ui->rootDirLabel->setText(rootDir);
+}
+
+void ImuProcesserWidget::on_pushButton_2_clicked()
+{
+    addline(this->ImagePosition);
+}
+
+void ImuProcesserWidget::on_lineEdit_2_editingFinished()
+{
+    slicename[uint(slice[uint(ImagePosition)])]=ui->lineEdit_2->text().toStdString();
 }

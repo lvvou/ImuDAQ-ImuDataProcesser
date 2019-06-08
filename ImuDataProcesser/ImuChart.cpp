@@ -71,11 +71,11 @@ bool ImuChart::addMarker(int position)
 {
     ImuVerticalLine *serietemp = new ImuVerticalLine(position,axisY);
     //serietemp->setColor(Qt::blue);
-    serietemp->setPen(QPen(Qt::blue, 1, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
+    serietemp->setPen(QPen(Qt::yellow, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
     chart->addSeries(serietemp);
     chart->setAxisX(axisX,serietemp);
     chart->setAxisY(axisY,serietemp);
-    push_back(serietemp,position);
+    Markerpush_back(serietemp,position);
     return true;
 }
 unsigned int ImuChart::GetaxisXMax()
@@ -170,8 +170,13 @@ void ImuChart::clearLineList()
     for (int var=0;var<series.size();var++){
         chart->removeSeries(series[var]);
     }
+    for (int var=0;var<Markerseries.size();var++){
+        chart->removeSeries(Markerseries[var]);
+    }
     positions.clear();
+    MarkerPosition.clear();
     series.clear();
+    Markerseries.clear();
 }
 ImuChart::~ImuChart()
 {

@@ -5,8 +5,9 @@ CsvWriter::CsvWriter()
 
 }
 
-bool CsvWriter::toCsv(QString filename, ImuDataChart imudata,QVector<int> positions,unsigned int length)
+bool CsvWriter::toCsv(QString filename, ImuDataChart imudata, std::vector<int> slice, std::vector<std::string> slicename, unsigned int length)
 {
+    //qDebug()<<slice;
     std::vector<std::string> Leg = { "RT","LT" };
     std::vector<std::string> Legposition = { "Foot","Thigh" };
     std::ofstream IMU_log = std::ofstream(filename.toStdString().data(), std::ios::out | std::ios::trunc);
@@ -33,13 +34,16 @@ bool CsvWriter::toCsv(QString filename, ImuDataChart imudata,QVector<int> positi
                 {
                     IMU_log <<(*signal)[var]<<',';
                 }
-        if(positions.indexOf(int(var))!=-1){
-            IMU_log << 0;
-        }
-        else {
-            IMU_log << 1 ;
-        }
-        IMU_log<<std::endl;
+//        if(positions.indexOf(int(var))!=-1){
+//            IMU_log << 0;
+//        }
+//        else {
+//            IMU_log << 1 ;
+//        }
+
+        IMU_log<<slicename[uint(slice[uint(var)])]<<std::endl;
     }
+    IMU_log.close();
+    std::cout<<"Write over!"<<std::endl;
     return true;
 }

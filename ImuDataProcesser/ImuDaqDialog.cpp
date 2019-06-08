@@ -44,7 +44,7 @@ ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
     waitConnect(Lpms,ChildList);
     viewFinder.init();
     //viewFinder.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
-    viewFinder.move(20,20);
+    //viewFinder.move(20,20);
     viewFinder.show();
 
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
@@ -52,7 +52,7 @@ ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
     connect(IMUDAQ,&IMUDAQ_Task::acquireOver,this,&ImuDaqDialog::stopSave);
     this->setWindowTitle("Imu DAQ Programer");
     this->show();
-    this->move(360,20);
+    //this->move(360,20);
     mainRect.top = (LONG)this->geometry().top();
     mainRect.bottom = (LONG)this->geometry().bottom();
     mainRect.right = (LONG)this->geometry().right();
