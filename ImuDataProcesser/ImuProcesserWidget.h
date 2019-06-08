@@ -57,7 +57,13 @@ public:
         connect(&RollChart,   &ImuChart::del, this, &SignalChart::emitdel);
         connect(&PitchChart,  &ImuChart::del, this, &SignalChart::emitdel);
     }
-
+    void clear()
+    {
+        for (auto temp:SignalChartVector) {
+            for(auto temp2:temp)
+                temp2->clearLineList();
+        }
+    }
     ImuChart AccXChart;
     ImuChart AccYChart;
     ImuChart AccZChart;
@@ -100,6 +106,12 @@ public:
         connect(&FootChart, &SignalChart::del, this, &LegPositionChart::emitdel);
         connect(&ThighChart, &SignalChart::del, this, &LegPositionChart::emitdel);
     }
+    void clear()
+    {
+        for (auto temp:LegPositionChartVector) {
+            temp->clear();
+        }
+    }
     SignalChart FootChart;
     SignalChart ThighChart;
     LegPositionLabel legpositionlabel={QString("Foot"),QString("Thigh")};
@@ -131,6 +143,12 @@ public:
         connect(&LeftLegChart, &LegPositionChart::add, this, &LegChart::emitadd);
         connect(&RightLegChart, &LegPositionChart::del, this, &LegChart::emitdel);
         connect(&LeftLegChart, &LegPositionChart::del, this, &LegChart::emitdel);
+    }
+    void clear()
+    {
+        for (auto temp:LegChartVector) {
+            temp->clear();
+        }
     }
     LegPositionChart RightLegChart;
     LegPositionChart  LeftLegChart;
@@ -190,6 +208,8 @@ private slots:
     void on_pushButton_2_clicked();    
     void on_lineEdit_2_editingFinished();
 
+    void on_GeneratepushButton_clicked();
+
 signals:
     void deleteme(QString id);
 private:
@@ -203,6 +223,7 @@ private:
     bool isplay;
     int ImagePosition;
     int position;
+    bool haveObtainSlice;
     unsigned int axisXMax;
     std::vector<int> slice;
     std::vector<std::string> slicename;

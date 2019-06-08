@@ -17,6 +17,7 @@ ImuProcesserWidget::ImuProcesserWidget(QWidget *parent) :
     this->position = 0;
     reader.setAutoTransform(true);
     imagewidget.show();
+    haveObtainSlice = false;
     //imagewidget.move(976+880+40,20);
     imagewidget.setWindowFlags(Qt::WindowStaysOnTopHint);
     Chart = new LegChart(ui->Coordinatelabel);
@@ -28,6 +29,7 @@ ImuProcesserWidget::ImuProcesserWidget(QWidget *parent) :
 
 ImuProcesserWidget::~ImuProcesserWidget()
 {
+    Chart->clear();
     delete Chart;
     delete ui;
 }
@@ -77,7 +79,7 @@ void ImuProcesserWidget::on_pushButton_clicked()
     }
 
     unsigned int i = 0;
-    bool haveObtainSlice = false;
+
     auto marker = csvreader.imudata.GetMarkerVector();
     std::cout<<"loss package : "<<std::count(marker.begin(),marker.end(),0)<<std::endl;
     auto LegSignal = csvreader.imudata.GetLegSignal().LegSignal[1-isRT];
@@ -102,24 +104,24 @@ void ImuProcesserWidget::on_pushButton_clicked()
             for (int var = 0; var <= signal->end()-signal->begin()-1; var++) {
                 chart->serie->append(var,*(temp+var));
             }
-            int tempSlice = 0;
+//            int tempSlice = 0;
 
             for (unsigned int var = 0; var < marker.size()-1; var++) {
                 if(marker[var]==0){
                     chart->addMarker(int(var));
-                    if(!haveObtainSlice)
-                        if(var!=0&&var!=marker.size()-2)
-                            tempSlice++;
+//                    if(!haveObtainSlice)
+//                        if(var!=0&&var!=marker.size()-2)
+//                            tempSlice++;
                 }
-                if(!haveObtainSlice)
-                    slice.push_back(tempSlice);
+//                if(!haveObtainSlice)
+//                    slice.push_back(tempSlice);
             }
-            if(!haveObtainSlice)
-                for(int i=0;i<=tempSlice;i++)
-                    slicename.push_back("1000");
+//            if(!haveObtainSlice)
+//                for(int i=0;i<=tempSlice;i++)
+//                    slicename.push_back("1000");
 
             chart->ImageLine->changeHigh(this->ImagePosition,chart->axisY);
-            haveObtainSlice = true;
+//            haveObtainSlice = true;
             i++;
         }
     i=12;
@@ -148,10 +150,12 @@ void ImuProcesserWidget::on_pushButton_clicked()
             }
             chart->ImageLine->changeHigh(this->ImagePosition,chart->axisY);
             chart->ImageLine->hide();
+            chart->showRedLine(false);
             i++;
         }
     first = false;
     ui->ZoomverticalSlider->setVisible(true);
+    std::cout<<"Init over!"<<std::endl;
 }
 
 void ImuProcesserWidget::on_WindowPositionhorizontalSlider_sliderMoved(int position)
@@ -261,12 +265,12 @@ bool ImuProcesserWidget::ChangePosition(int position)
 void ImuProcesserWidget::on_RedcheckBox_stateChanged(int show)
 {
     showred = show;
-    auto chart=Chart->LegChartVector[isRT];
+    auto chart=Chart->LegChartVector[1-isRT];
     for(auto legpositionchart:chart->LegPositionChartVector)
         for(auto signalchart:legpositionchart->SignalChartVector)
             for(auto accangle:signalchart)
             {
-                accangle->showRedLine(show);
+                accangle->showRedLine(showred);
             }
 }
 
@@ -364,7 +368,8 @@ bool ImuProcesserWidget::ChangeImageLine(int value)
                     accangle->ImageLine->changeHigh(value,accangle->axisY);
                     accangle->update();
                 }
-    ui->lineEdit_2->setText(QString::fromStdString(slicename[uint(slice[uint(ImagePosition)])]));
+    if(haveObtainSlice)
+        ui->lineEdit_2->setText(QString::fromStdString(slicename[uint(slice[uint(ImagePosition)])]));
     return true;
 }
 void ImuProcesserWidget::on_ImagPositionhorizontalSlider_valueChanged(int value)
@@ -417,5 +422,25 @@ void ImuProcesserWidget::on_pushButton_2_clicked()
 
 void ImuProcesserWidget::on_lineEdit_2_editingFinished()
 {
-    slicename[uint(slice[uint(ImagePosition)])]=ui->lineEdit_2->text().toStdString();
+    if(haveObtainSlice)
+        slicename[uint(slice[uint(ImagePosition)])]=ui->lineEdit_2->text().toStdString();
+}
+
+void ImuProcesserWidget::on_GeneratepushButton_clicked()
+{
+    haveObtainSlice = false;
+    slice.clear();
+    slicename.clear();
+    int tempSlice = 0;
+    auto positions = Chart->LeftLegChart.FootChart.AccXChart.positions;
+    //auto length = csvreader.imudata.GetLegSignal().LeftLegSignal.FootSignal.AccX.size();
+    for (unsigned int var = 0; var < this->length; var++) {
+        if(var!=0&&var!=this->length-1)
+            if(positions.indexOf(int(var))!=-1)
+                tempSlice++;
+            slice.push_back(tempSlice);
+    }
+    for(int i=0;i<=tempSlice;i++)
+        slicename.push_back("1000");
+    haveObtainSlice = true;
 }
