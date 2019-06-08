@@ -25,7 +25,7 @@ ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
 
 
     period = 5;
-    filenum = 0;
+    filenum = 1;
     Rate = 100;
     timeshow = false;
     filename = "walk";
@@ -247,7 +247,7 @@ void ImuDaqDialog::on_ActivepushButton_clicked()
 {
     QDir dir;
     if (syncaction) {
-        filenum++;
+        ui->FilenumlineEdit->setText(QString::number(filenum));
         address = rootDir+"ImuLog/"+subject+"/"+QString::fromStdString(filename)+QString::number(filenum)+"/";
         if(!dir.exists(address))
         {
@@ -255,13 +255,11 @@ void ImuDaqDialog::on_ActivepushButton_clicked()
                 dir.mkpath(address);
         }
         CmdProcess(16);
+        filenum++;
     }
     else QMessageBox::information(this,
                                  tr("please start sync command"),
                                  tr("please start sync command!"));
-    ui->FilenumlineEdit->blockSignals(true);
-    ui->FilenumlineEdit->setText(QString::number(filenum));
-    ui->FilenumlineEdit->blockSignals(false);
 }
 
 void ImuDaqDialog::on_ShowImagepushButton_clicked()
