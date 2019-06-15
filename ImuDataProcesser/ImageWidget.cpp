@@ -6,6 +6,8 @@ ImageWidget::ImageWidget(QMainWindow *parent)
     imageLabel.setBackgroundRole(QPalette::Base);
     imageLabel.setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel.setScaledContents(true);
+    setMinimumSize(424, 240);
+    setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     setCentralWidget(&imageLabel);
 }
 

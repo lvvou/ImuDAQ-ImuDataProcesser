@@ -18,13 +18,22 @@ ImuProcesserWidget::ImuProcesserWidget(QWidget *parent) :
     reader.setAutoTransform(true);
     imagewidget.show();
     haveObtainSlice = false;
+    setWindowState(Qt::WindowMaximized);
     //imagewidget.move(976+880+40,20);
-    imagewidget.setWindowFlags(Qt::WindowStaysOnTopHint);
     Chart = new LegChart(ui->Coordinatelabel);
     this->setWindowTitle("Imu Data Processer");
     connect(Chart,&LegChart::add,this,&ImuProcesserWidget::addline);
     connect(Chart,&LegChart::del,this,&ImuProcesserWidget::delline);
-    //this->move(860,20);
+    unsigned int i = 0;
+    auto LegSignal = csvreader.imudata.GetLegSignal().LegSignal[1-isRT];
+    for (auto LegPositionSignal:LegSignal->LegPositionSignal)
+        for(auto signal:LegPositionSignal->ShowSignalVector)
+        {
+            Q_UNUSED(signal)
+            auto chart = Chart->LegChartVector[i/12]->LegPositionChartVector[i%12/6]->SignalChartVector[i%6/3][i%6%3];
+            ui->gridLayoutCharts->addWidget(chart,i%4,i/4);
+            i++;
+        }
 }
 
 ImuProcesserWidget::~ImuProcesserWidget()
@@ -43,6 +52,9 @@ void ImuProcesserWidget::on_pushButton_clicked()
     slice.clear();
     slicename.clear();
     length = csvreader.ReadCsv();
+    if(length==0) {
+        return;
+    }
     csvreader.imudata.VerifyEuler2Quaternion();
     ImageDir = rootDir+"/"+ui->FilenamelineEdit->text();
     ImageLogFile = ImageDir+"/"+"log.txt";
@@ -52,9 +64,6 @@ void ImuProcesserWidget::on_pushButton_clicked()
     FirstImage = QString::fromStdString(strLineContext.substr(strLineContext.find_first_of("_", 0)+1, strLineContext.size()));
     std::cout<<"First Image number :"<<FirstImage.toStdString()<<std::endl;
     firstImageNumber = FirstImage.toInt();
-    if(length==0) {
-        return;
-    }
     this->position = 0;
     this->ImagePosition = position+ui->ImagPositionhorizontalSlider->value();
     ChangePosition(0);
@@ -90,9 +99,9 @@ void ImuProcesserWidget::on_pushButton_clicked()
             chart->clearLineList();
             auto minY = std::min_element(signal->begin(),signal->end()-1);
             auto maxY = std::max_element(signal->begin(),signal->end()-1);
-            if(first){
-                ui->gridLayoutCharts->addWidget(chart,i%4,i/4);
-            }
+//            if(first){
+//                ui->gridLayoutCharts->addWidget(chart,i%4,i/4);
+//            }
             chart->chart->setTitle(Chart->leglabel[i/12]+Chart->LegChartVector[i/12]->legpositionlabel[i%12/6]+Chart->LegChartVector[i/12]->LegPositionChartVector[i%12/6]->SignalLabel[i%6/3][i%6%3]);
             chart->axisY->setRange(*minY-abs((*maxY-*minY)/5.0),*maxY+abs((*maxY-*minY)/5.0));
             chart->axisYMax = *maxY+abs((*maxY-*minY)/5.0);
@@ -153,8 +162,8 @@ void ImuProcesserWidget::on_pushButton_clicked()
             chart->showRedLine(false);
             i++;
         }
-    first = false;
-    ui->ZoomverticalSlider->setVisible(true);
+//    first = false;
+//    ui->ZoomverticalSlider->setVisible(true);
     std::cout<<"Init over!"<<std::endl;
 }
 
@@ -315,17 +324,23 @@ void ImuProcesserWidget::delline(int position)
 
 void ImuProcesserWidget::on_OutputpushButton_clicked()
 {
-    QString address = rootDir+"/"+rootDir.section('/', -1)+"_Process";
-    qDebug()<<"address : "<<address;
-    QDir dir;
-    if(!dir.exists(address))
-    {
-            qDebug()<<QObject::tr("The path does not exist ! ")<<endl;
-            dir.mkpath(address);
+    if(slicename.empty()){
+        std::cout<<"slicename is empty ! "<<std::endl;
+        return;
     }
-    QString Allfilename = address+"/"+ui->lineEdit->text()+".csv";
-    csvwriter.toCsv(Allfilename,csvreader.imudata,slice,
-                    slicename,length);
+    else{
+        QString address = rootDir+"/"+rootDir.section('/', -1)+"_Process";
+        qDebug()<<"address : "<<address;
+        QDir dir;
+        if(!dir.exists(address))
+        {
+                std::cout<<"The path does not exist ! "<<std::endl;
+                dir.mkpath(address);
+        }
+        QString Allfilename = address+"/"+ui->lineEdit->text()+".csv";
+        csvwriter.toCsv(Allfilename,csvreader.imudata,slice,
+                        slicename,length);
+    }
 }
 
 void ImuProcesserWidget::on_axisXRangespinBox_editingFinished()

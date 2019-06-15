@@ -2,15 +2,16 @@
 #include "ui_dialog.h"
 #include "windef.h"
 #include <Windows.h>
-#include "winuser.h"
+#include "WinUser.h"
 #pragma comment(lib, "user32.lib")  //加载 ws2_32.dll
 extern ImuSocket_Task ImuSocket;
 extern bool syncaction;
-ImuDaqDialog::ImuDaqDialog(QWidget *parent) :
+ImuDaqDialog::ImuDaqDialog(QWidget *parent,QApplication* exe) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    this->exe = exe;
     QList<QObject*> ChildList = children();
     foreach(QObject *obj,ChildList){
         //QWidget *widget = qobject_cast<QWidget*>(obj);
@@ -293,14 +294,9 @@ void ImuDaqDialog::on_SubjectlineEdit_editingFinished()
 
 void ImuDaqDialog::closeEvent(QCloseEvent *event)
 {
-    if (viewFinder.getstate()) {
-        event->ignore();
-        qDebug()<<"please close after over-recording ! ";
-    } else {
-        event->accept();
-        QDialog::closeEvent(event);
-        //emit(deleteme("ImuDaqDialog"));
-    }
+     event->accept();
+     QDialog::closeEvent(event);
+     //emit(deleteme("ImuDaqDialog"));
 }
 
 void ImuDaqDialog::hideEvent(QHideEvent *event)
@@ -372,5 +368,7 @@ void ImuDaqDialog::on_pushButton_clicked()
 void ImuDaqDialog::on_pushButton_2_clicked()
 {
     ClipCursor(nullptr);
-    this->close();
+
+    this->exe->quit();
+    //this->close();
 }

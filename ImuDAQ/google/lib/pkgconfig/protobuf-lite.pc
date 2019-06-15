@@ -1,0 +1,11 @@
+prefix=D:/Study program/install
+exec_prefix=D:/Study program/install
+libdir=D:/Study program/install/lib
+includedir=D:/Study program/install/include
+
+Name: Protocol Buffers
+Description: Google's Data Interchange Format
+Version: 3.7.1.0
+Libs: -L${libdir} -lprotobuf-lite 
+Cflags: -I${includedir} 
+Conflicts: protobuf
